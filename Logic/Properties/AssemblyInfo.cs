@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("My File Downloader")]
+[assembly: AssemblyTitle("Logic")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("AdrianIT")]
-[assembly: AssemblyProduct("My File Downloader")]
-[assembly: AssemblyCopyright("Copyright © AdrianIT 2020")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("Logic")]
+[assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("f809e00e-791c-434e-997a-979d9baed675")]
+[assembly: Guid("7f4bf0f6-c38a-4dd1-97d4-a1fc89819c4e")]
 
 // Version information for an assembly consists of the following four values:
 //

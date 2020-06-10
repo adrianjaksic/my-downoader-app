@@ -36,6 +36,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,15 +45,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Downloader\DownloaderController.cs" />
-    <Compile Include="Files\FileManagerController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Wrappers\UrlProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Interfaces\Interfaces.csproj">
       <Project>{88FF2269-20D7-47E4-A8C1-B040B0175FCE}</Project>
       <Name>Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Logic\Logic.csproj">
+      <Project>{7f4bf0f6-c38a-4dd1-97d4-a1fc89819c4e}</Project>
+      <Name>Logic</Name>
     </ProjectReference>
     <ProjectReference Include="..\Models\Models.csproj">
       <Project>{334D8B2F-C352-4B52-AF90-C5F4874EA7CD}</Project>

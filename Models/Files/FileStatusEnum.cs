@@ -6,5 +6,7 @@
         Downloading = 1,
         ForDownload = 2,
         Downloaded = 3,
+        DownloadError = 4,
+        DownloadStopped = 5,
     }
 }

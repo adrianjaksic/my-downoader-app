@@ -5,6 +5,8 @@ namespace Interfaces.Views
 {
     public interface IFileManagerView
     {
-        void SetAvailableFiles(IEnumerable<UriFile> files);
+        void SetAvailableFiles(IEnumerable<AvailableFile> availableFiles);
+        void RefreshAvailableFiles();
+        void SetDownloadedFiles(IEnumerable<DownloadedFile> downloadedFiles);
     }
 }

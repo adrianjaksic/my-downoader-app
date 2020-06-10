@@ -42,8 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Files\DownloadedFile.cs" />
     <Compile Include="Files\FileStatusEnum.cs" />
-    <Compile Include="Files\UriFile.cs" />
+    <Compile Include="Files\AvailableFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
