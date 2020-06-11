@@ -10,17 +10,18 @@ namespace Logic.Downloading
     public class FileDownloader
     {
         private const int MaxDownloadPercentage = 100;
-
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly IFileDownloaderActions _actions;
+        private readonly int _refreshProgresIntervalInMiliseconds;
         private readonly AvailableFile _file;
         private readonly WebClient _webClient;
         private DateTime _lastUpdateTime;
 
-        public FileDownloader(IFileDownloaderActions actions, AvailableFile file)
+        public FileDownloader(IFileDownloaderActions actions, AvailableFile file, int refreshProgresIntervalInMiliseconds)
         {
             _actions = actions;
-            _file = file; 
+            _file = file;
+            _refreshProgresIntervalInMiliseconds = refreshProgresIntervalInMiliseconds;
              _webClient = new WebClient();
         }
 
@@ -41,7 +42,7 @@ namespace Logic.Downloading
         private void DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
             _file.DownloadPercent = e.ProgressPercentage;
-            if ((DateTime.Now - _lastUpdateTime).TotalMilliseconds >= AppSettings.RefreshProgresIntervalInMiliseconds)
+            if ((DateTime.Now - _lastUpdateTime).TotalMilliseconds >= _refreshProgresIntervalInMiliseconds)
             {
                 _lastUpdateTime = DateTime.Now;
                 _actions.DownloadProgressChanged();

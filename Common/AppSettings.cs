@@ -5,14 +5,14 @@ using System.Configuration;
 
 namespace Common
 {
-    public static class AppSettings
+    public class AppSettings : Interfaces.Common.IAppSettings
     {
-        public static int RefreshProgresIntervalInMiliseconds => Get<int>(nameof(RefreshProgresIntervalInMiliseconds));
-        public static int MaxDownloadedFiles => Get<int>(nameof(MaxDownloadedFiles));
-        public static int NumberOfDownloaders => Get<int>(nameof(NumberOfDownloaders));
-        public static string FileStoragePath => Get<string>(nameof(FileStoragePath));
+        public int RefreshProgresIntervalInMiliseconds => Get<int>(nameof(RefreshProgresIntervalInMiliseconds));
+        public int MaxDownloadedFiles => Get<int>(nameof(MaxDownloadedFiles));
+        public int NumberOfDownloaders => Get<int>(nameof(NumberOfDownloaders));
+        public string FileStoragePath => Get<string>(nameof(FileStoragePath));
 
-        private static T Get<T>(string key)
+        private T Get<T>(string key)
         {
             string setting = ConfigurationManager.AppSettings[key];
             if (setting == null)

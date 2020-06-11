@@ -1,4 +1,5 @@
 ﻿using Common;
+using Interfaces.Common;
 using Interfaces.Helpers;
 using Interfaces.Views;
 using Logic.Controllers;
@@ -15,11 +16,13 @@ namespace WinForm
     public partial class FrmFileManager : Form, IFileManagerView, IMainView
     {
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private readonly IAppSettings _appSettings;
         private readonly FileManagerController _controller;
 
-        public FrmFileManager(IUrlProvider urlProvider, IDownloadFileManager downloadFileReader)
+        public FrmFileManager(IUrlProvider urlProvider, IDownloadFileManager downloadFileReader, IAppSettings appSettings)
         {
-            _controller = new FileManagerController(this, urlProvider, downloadFileReader);
+            _appSettings = appSettings;
+            _controller = new FileManagerController(this, urlProvider, downloadFileReader, appSettings);
             InitializeComponent();            
         }
 
@@ -81,7 +84,7 @@ namespace WinForm
 
         private void FrmFileManager_Load(object sender, EventArgs e)
         {
-            _controller.SetFileStoragePath(AppSettings.FileStoragePath);
+            _controller.SetFileStoragePath(_appSettings.FileStoragePath);
             _controller.LoadAvailableFiles();
         }
 

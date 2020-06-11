@@ -48,6 +48,11 @@ namespace Logic.Helpers
             return file;
         }
 
+        public void Delete(string filePath)
+        {
+            File.Delete(filePath);
+        }
+
         private string GetUniqueFilename(ref string fileName, string folderPath)
         {
             var filePath = $"{folderPath}{fileName}";

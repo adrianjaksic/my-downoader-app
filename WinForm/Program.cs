@@ -21,7 +21,7 @@ namespace WinForm
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             _mainView = CompositionRoot.Resolve<FrmFileManager>();
-            Application.Run(_mainView as Form);
+            Application.Run(_mainView as FrmFileManager);
         }
 
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)

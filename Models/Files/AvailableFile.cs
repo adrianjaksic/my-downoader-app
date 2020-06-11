@@ -4,7 +4,7 @@ namespace Models.Files
 {
     public class AvailableFile
     {
-        public const string DownloadActionName = "Stop";
+        public const string DownloadActionName = "Download";
         public const string DownloadStopActionName = "Stop";
 
         public Uri Uri { get; set; }

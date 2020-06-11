@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Collections.Concurrent;
 using Common;
+using Interfaces.Common;
 
 namespace Logic.Controllers
 {
@@ -16,18 +17,20 @@ namespace Logic.Controllers
     {
         private readonly IFileManagerView _downloaderView;
         private readonly IUrlProvider _urlProvider;
-        private readonly IDownloadFileManager _downloadFileReader;
-        
+        private readonly IDownloadFileManager _downloadFileManager;
+        private readonly IAppSettings _appSettings;
+
         private string _fileStoragePath;
         private IEnumerable<AvailableFile> _availableFiles;
         private readonly Queue<DownloadedFile> _downloadedFiles = new Queue<DownloadedFile>();
         private readonly ConcurrentDictionary<AvailableFile, FileDownloader> _downloaders = new ConcurrentDictionary<AvailableFile, FileDownloader>();
 
-        public FileManagerController(IFileManagerView downloaderView, IUrlProvider urlProvider, IDownloadFileManager downloadFileReader)
+        public FileManagerController(IFileManagerView downloaderView, IUrlProvider urlProvider, IDownloadFileManager downloadFileManager, IAppSettings appSettings)
         {
             _downloaderView = downloaderView;
             _urlProvider = urlProvider;
-            _downloadFileReader = downloadFileReader;
+            _downloadFileManager = downloadFileManager;
+            _appSettings = appSettings;
         }
 
         public void SetFileStoragePath(string path)
@@ -38,7 +41,7 @@ namespace Logic.Controllers
             }
 
             _fileStoragePath = path;
-            _downloadFileReader.EnsureDirectoryExist(_fileStoragePath);
+            _downloadFileManager.EnsureDirectoryExist(_fileStoragePath);
             LoadFiles(_fileStoragePath);
             DeleteOldFiles();
         }
@@ -108,7 +111,7 @@ namespace Logic.Controllers
 
             AddDownloadedFile(file, data);
 
-            while (AppSettings.NumberOfDownloaders > _downloaders.Count && _availableFiles.Any(f => f.Status == FileStatusEnum.ForDownload))
+            while (_appSettings.NumberOfDownloaders > _downloaders.Count && _availableFiles.Any(f => f.Status == FileStatusEnum.ForDownload))
             {
                 var nextFile = _availableFiles.OrderBy(f => f.Modified).FirstOrDefault(f => f.Status == FileStatusEnum.ForDownload);
                 StartDownloadIfAvailable(nextFile);
@@ -130,7 +133,7 @@ namespace Logic.Controllers
 
         private void LoadFiles(string path)
         {
-            foreach (var item in _downloadFileReader.LoadAllFilesFromPath(path))
+            foreach (var item in _downloadFileManager.LoadAllFilesFromPath(path))
             {
                 _downloadedFiles.Enqueue(item);
             }
@@ -141,11 +144,11 @@ namespace Logic.Controllers
         {
             file.Modified = DateTime.Now;
             file.Status = FileStatusEnum.ForDownload;
-            if (AppSettings.NumberOfDownloaders > _downloaders.Count)
+            if (_appSettings.NumberOfDownloaders > _downloaders.Count)
             {
                 if (!_downloaders.ContainsKey(file))
                 {
-                    var fd = new FileDownloader(this, file);
+                    var fd = new FileDownloader(this, file, _appSettings.RefreshProgresIntervalInMiliseconds);
                     _downloaders.TryAdd(file, fd);
                     fd.Start();
                 }
@@ -154,7 +157,7 @@ namespace Logic.Controllers
 
         private void AddDownloadedFile(AvailableFile file, byte[] data)
         {
-            var downloadedFile = _downloadFileReader.CreateFile(file.Uri.Segments.Last(), _fileStoragePath, data);
+            var downloadedFile = _downloadFileManager.CreateFile(file.Uri.Segments.Last(), _fileStoragePath, data);
             lock (_downloadedFiles)
             {                
                 _downloadedFiles.Enqueue(downloadedFile);
@@ -166,7 +169,7 @@ namespace Logic.Controllers
             List<string> filesForDelete = new List<string>();
             lock (_downloadedFiles)
             {
-                while (_downloadedFiles.Count > AppSettings.MaxDownloadedFiles)
+                while (_downloadedFiles.Count > _appSettings.MaxDownloadedFiles)
                 {
                     var fileForDelete = _downloadedFiles.Dequeue();
                     filesForDelete.Add(fileForDelete.Path);
@@ -174,7 +177,7 @@ namespace Logic.Controllers
             }
             foreach (var filePath in filesForDelete)
             {
-                File.Delete(filePath);
+                _downloadFileManager.Delete(filePath);
             }
         }
     }

@@ -1,6 +1,8 @@
 ﻿using Interfaces.Helpers;
 using Logic.Helpers;
 using Ninject.Modules;
+using Common;
+using Interfaces.Common;
 
 namespace WinForm.Ninject
 {
@@ -8,6 +10,7 @@ namespace WinForm.Ninject
     {
         public override void Load()
         {
+            Bind(typeof(IAppSettings)).To(typeof(AppSettings));
             Bind(typeof(IUrlProvider)).To(typeof(UrlProvider));
             Bind(typeof(IDownloadFileManager)).To(typeof(DownloadFileManager));
         }
