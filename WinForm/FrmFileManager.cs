@@ -1,4 +1,5 @@
 ﻿using Common;
+using Interfaces.Helpers;
 using Interfaces.Views;
 using Logic.Controllers;
 using Logic.Helpers;
@@ -16,9 +17,9 @@ namespace WinForm
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly FileManagerController _controller;
 
-        public FrmFileManager()
+        public FrmFileManager(IUrlProvider urlProvider, IDownloadFileManager downloadFileReader)
         {
-            _controller = new FileManagerController(this, new UrlProvider(), new DownloadFileManager());
+            _controller = new FileManagerController(this, urlProvider, downloadFileReader);
             InitializeComponent();            
         }
 

@@ -59,7 +59,7 @@ namespace Logic.Controllers
 
         public void DownloadAll()
         {
-            foreach (var file in _availableFiles)
+            foreach (var file in _availableFiles.Where(f => f.ActionName == AvailableFile.DownloadActionName))
             {
                 StartDownloadIfAvailable(file);
             }
