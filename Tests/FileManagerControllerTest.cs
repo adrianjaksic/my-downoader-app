@@ -31,6 +31,7 @@ namespace Tests
 
             controller.SetFileStoragePath(TestPath);
 
+            //first file should be deleted
             fileManager.Verify(fm => fm.Delete(files[0].Path), Times.Once());
         }
 
