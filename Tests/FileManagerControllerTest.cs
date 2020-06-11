@@ -17,7 +17,7 @@ namespace Tests
         private const int MaxDownloadedFiles = 10;
 
         [TestMethod]
-        public void TestDeletionOfExceedingElements()
+        public void TestDeletionOfunnecessaryFiles()
         {
             Mock<IAppSettings> appSettings = new Mock<IAppSettings>();
             Mock<IFileManagerView> view = new Mock<IFileManagerView>();
